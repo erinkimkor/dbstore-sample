@@ -22,20 +22,43 @@ module.exports = {
 
   sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
 
-  mailgun: {
-    user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
-    password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
-  },
-  
   mandrill: {
-    user: process.env.MANDRILL_USER || 'hackathonstarterdemo',
-    password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
+    user: process.env.MANDRILL_USER || 'erin.kim.kor@gmail.com',
+    password: process.env.MANDRILL_PASSWORD || 'v51YXt-YxDor4OpOm48pqQ'
   },
 
-  sendgrid: {
-    user: process.env.SENDGRID_USER || 'hslogin',
-    password: process.env.SENDGRID_PASSWORD || 'hspassword00'
+  facebook: {
+    clientID: process.env.FACEBOOK_ID || '1497165737235520',
+    clientSecret: process.env.FACEBOOK_SECRET || 'db2fd93fb121d021b481fc2c88021e2a',
+    callbackURL: '/auth/facebook/callback',
+    passReqToCallback: true
   },
+
+  twitter: {
+    consumerKey: process.env.TWITTER_KEY || 'nihP5PpFfcYAsyxrckQuOwPon',
+    consumerSecret: process.env.TWITTER_SECRET  || 'CSsdNplnwJEgY6U6cjAoTGRuhuq1nairh66feiQ3nGdmFklTQR',
+    callbackURL: '/auth/twitter/callback',
+    passReqToCallback: true
+  },
+
+  google: {
+    clientID: process.env.GOOGLE_ID || '24356611601-gi5eqe0ugfrhc3hrcqevbfuaib76rvfk.apps.googleusercontent.com',
+    clientSecret: process.env.GOOGLE_SECRET || 'FAjgGDiiBWeiUSWpBWwJwEdZ',
+    callbackURL: '/auth/google/callback',
+    passReqToCallback: true
+  },
+
+  naver: {
+    clientID: process.env.NAVER_ID || 'b0yabDV6sdjW5DRrUCyQ',
+    clientSecret: process.env.NAVER_SECRET || '1BA1JpvHO3',
+    callbackURL: '/auth/naver/callback'
+  },
+
+  skplanet: process.env.SK_PLANET || '4313cde6-5caa-385d-86a6-5f3ce3a2c97c',
+
+
+
+
 
   nyt: {
     key: process.env.NYT_KEY || '9548be6f3a64163d23e1539f067fcabd:5:68537648'
@@ -44,13 +67,6 @@ module.exports = {
   lastfm: {
     api_key: process.env.LASTFM_KEY || 'c8c0ea1c4a6b199b3429722512fbd17f',
     secret: process.env.LASTFM_SECRET || 'is cb7857b8fba83f819ea46ca13681fe71'
-  },
-
-  facebook: {
-    clientID: process.env.FACEBOOK_ID || '754220301289665',
-    clientSecret: process.env.FACEBOOK_SECRET || '41860e58c256a3d7ad8267d3c1939a4a',
-    callbackURL: '/auth/facebook/callback',
-    passReqToCallback: true
   },
 
   instagram: {
@@ -64,20 +80,6 @@ module.exports = {
     clientID: process.env.GITHUB_ID || 'cb448b1d4f0c743a1e36',
     clientSecret: process.env.GITHUB_SECRET || '815aa4606f476444691c5f1c16b9c70da6714dc6',
     callbackURL: '/auth/github/callback',
-    passReqToCallback: true
-  },
-
-  twitter: {
-    consumerKey: process.env.TWITTER_KEY || '6NNBDyJ2TavL407A3lWxPFKBI',
-    consumerSecret: process.env.TWITTER_SECRET  || 'ZHaYyK3DQCqv49Z9ofsYdqiUgeoICyh6uoBgFfu7OeYC7wTQKa',
-    callbackURL: '/auth/twitter/callback',
-    passReqToCallback: true
-  },
-
-  google: {
-    clientID: process.env.GOOGLE_ID || '828110519058.apps.googleusercontent.com',
-    clientSecret: process.env.GOOGLE_SECRET || 'JdZsIaWhUFIchmC1a_IZzOHb',
-    callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
 

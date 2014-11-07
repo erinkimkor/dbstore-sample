@@ -7,13 +7,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="/" class="navbar-brand"><span class="ion-cube"></span>데이터 스토어</a>
+      <a href="/" class="navbar-brand"><span class="ion-cube"></span>데이터 스토어 API 활용</a>
     </div>
     <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
-        <li class="{% if title === '애플리케이션' %}active{% endif %}"><a href="/examples">애플리케이션</a></li>
-        <li class="{% if title === '문의' %}active{% endif %}"><a href="/contact">문의</a></li>
-      </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if !user %}
         <li class="{% if title === '로그인' %}active{% endif %}"><a href="/login">로그인</a></li>

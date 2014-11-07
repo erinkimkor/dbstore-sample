@@ -1,0 +1,36 @@
+{% extends '../layout.html' %}
+{% block body %}
+
+<div class="page-header"><h3>로그인</h3></div>
+
+<form method="POST">
+  <input type="hidden" name="_csrf" value="{{ _csrf }}">
+
+  <div class="col-sm-8 col-sm-offset-2">
+
+    <div class="form-group">
+      <label for="email" class="control-label">이메일</label>
+      <input type="text" name="email" id="email" placeholder="" autofocus="" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="password" class="control-label">비밀번호</label>
+      <input type="password" name="password" id="password" placeholder="" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary"><span class="ion-android-hand"></span>로그인</button>
+      <a href="/forgot" class="btn btn-link">비밀번호를 잊어버리셨습니까?</a>
+    </div>
+
+    <hr>
+
+    <a href="/auth/naver" class="btn btn-block btn-naver btn-social"><i class="fa-naver">N</i>네이버로 로그인하기</a>
+    <a href="/auth/facebook" class="btn btn-block btn-facebook btn-social"><i class="fa fa-facebook"></i>페이스북으로 로그인하기</a>
+    <a href="/auth/twitter" class="btn btn-block btn-twitter btn-social"><i class="fa fa-twitter"></i>트위터로 로그인하기</a>
+    <a href="/auth/google" class="btn btn-block btn-google-plus btn-social"><i class="fa fa-google-plus"></i>구글로 로그인하기</a>
+
+  </div>
+</form>
+
+{% endblock %}

@@ -1,10 +1,10 @@
 var secrets = require('../config/secrets');
 var nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport({
-  service: 'SendGrid',
+  service: 'Mandrill',
   auth: {
-    user: secrets.sendgrid.user,
-    pass: secrets.sendgrid.password
+    user: secrets.mandrill.user,
+    pass: secrets.mandrill.password
   }
 });
 
@@ -28,9 +28,9 @@ exports.getContact = function(req, res) {
  */
 
 exports.postContact = function(req, res) {
-  req.assert('name', 'Name cannot be blank').notEmpty();
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('message', 'Message cannot be blank').notEmpty();
+  req.assert('name', '이름을 입력해주세요.').notEmpty();
+  req.assert('email', '이메일이 유효하지 않습니다.').isEmail();
+  req.assert('message', '내용을 입력해주세요.').notEmpty();
 
   var errors = req.validationErrors();
 
@@ -42,8 +42,8 @@ exports.postContact = function(req, res) {
   var from = req.body.email;
   var name = req.body.name;
   var body = req.body.message;
-  var to = 'your@email.com';
-  var subject = 'Contact Form | Hackathon Starter';
+  var to = 'erin.kim.kor@gmail.com';
+  var subject = '문의하기 | 데이터 스토어';
 
   var mailOptions = {
     to: to,
@@ -57,7 +57,7 @@ exports.postContact = function(req, res) {
       req.flash('errors', { msg: err.message });
       return res.redirect('/contact');
     }
-    req.flash('success', { msg: 'Email has been sent successfully!' });
+    req.flash('success', { msg: '이메일이 발송되었습니다.' });
     res.redirect('/contact');
   });
 };

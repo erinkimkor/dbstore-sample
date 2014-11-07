@@ -15,4 +15,7 @@
 
 //= require lib/jquery-2.1.1.min
 //= require lib/bootstrap.min
+//= require lib/modernizr.custom
+//= require lib/jquery.fittext
+//= require lib/boxgrid
 //= require main

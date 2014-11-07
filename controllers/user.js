@@ -14,7 +14,7 @@ var secrets = require('../config/secrets');
 exports.getLogin = function(req, res) {
   if (req.user) return res.redirect('/');
   res.render('account/login', {
-    title: 'Login'
+    title: '로그인'
   });
 };
 
@@ -26,8 +26,8 @@ exports.getLogin = function(req, res) {
  */
 
 exports.postLogin = function(req, res, next) {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password cannot be blank').notEmpty();
+  req.assert('email', '이메일 주소를 바르게 입력해 주세요.').isEmail();
+  req.assert('password', '비밀번호를 입력해 주세요.').notEmpty();
 
   var errors = req.validationErrors();
 
@@ -44,7 +44,7 @@ exports.postLogin = function(req, res, next) {
     }
     req.logIn(user, function(err) {
       if (err) return next(err);
-      req.flash('success', { msg: 'Success! You are logged in.' });
+      req.flash('success', { msg: '로그인 되었습니다.' });
       res.redirect(req.session.returnTo || '/');
     });
   })(req, res, next);
@@ -68,7 +68,7 @@ exports.logout = function(req, res) {
 exports.getSignup = function(req, res) {
   if (req.user) return res.redirect('/');
   res.render('account/signup', {
-    title: 'Create Account'
+    title: '가입'
   });
 };
 
@@ -80,9 +80,9 @@ exports.getSignup = function(req, res) {
  */
 
 exports.postSignup = function(req, res, next) {
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  req.assert('email', '이메일 주소를 바르게 입력해 주세요.').isEmail();
+  req.assert('password', '비밀번호는 최소 4자 이상이어야 합니다.').len(4);
+  req.assert('confirmPassword', '비밀번호가 일치하지 않습니다.').equals(req.body.password);
 
   var errors = req.validationErrors();
 
@@ -98,7 +98,7 @@ exports.postSignup = function(req, res, next) {
 
   User.findOne({ email: req.body.email }, function(err, existingUser) {
     if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
+      req.flash('errors', { msg: '해당 이메일로 가입된 계저이 존재합니다.' });
       return res.redirect('/signup');
     }
     user.save(function(err) {
@@ -118,7 +118,7 @@ exports.postSignup = function(req, res, next) {
 
 exports.getAccount = function(req, res) {
   res.render('account/profile', {
-    title: 'Account Management'
+    title: '내 계정'
   });
 };
 
@@ -132,13 +132,10 @@ exports.postUpdateProfile = function(req, res, next) {
     if (err) return next(err);
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
-    user.profile.gender = req.body.gender || '';
-    user.profile.location = req.body.location || '';
-    user.profile.website = req.body.website || '';
 
     user.save(function(err) {
       if (err) return next(err);
-      req.flash('success', { msg: 'Profile information updated.' });
+      req.flash('success', { msg: '프로필이 갱신되었습니다.' });
       res.redirect('/account');
     });
   });
@@ -151,8 +148,8 @@ exports.postUpdateProfile = function(req, res, next) {
  */
 
 exports.postUpdatePassword = function(req, res, next) {
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+  req.assert('password', '비밀번호는 최소 4자 이상이어야 합니다.').len(4);
+  req.assert('confirmPassword', '비밀번호가 일치하지 않습니다.').equals(req.body.password);
 
   var errors = req.validationErrors();
 
@@ -168,7 +165,7 @@ exports.postUpdatePassword = function(req, res, next) {
 
     user.save(function(err) {
       if (err) return next(err);
-      req.flash('success', { msg: 'Password has been changed.' });
+      req.flash('success', { msg: '비밀번호가 변경되었습니다.' });
       res.redirect('/account');
     });
   });
@@ -183,7 +180,7 @@ exports.postDeleteAccount = function(req, res, next) {
   User.remove({ _id: req.user.id }, function(err) {
     if (err) return next(err);
     req.logout();
-    req.flash('info', { msg: 'Your account has been deleted.' });
+    req.flash('info', { msg: '계정이 삭제되었습니다.' });
     res.redirect('/');
   });
 };
@@ -204,7 +201,7 @@ exports.getOauthUnlink = function(req, res, next) {
 
     user.save(function(err) {
       if (err) return next(err);
-      req.flash('info', { msg: provider + ' account has been unlinked.' });
+      req.flash('info', { msg: provider + ' 계정 연동이 해제되었습니다.' });
       res.redirect('/account');
     });
   });
@@ -224,7 +221,7 @@ exports.getReset = function(req, res) {
     .where('resetPasswordExpires').gt(Date.now())
     .exec(function(err, user) {
       if (!user) {
-        req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
+        req.flash('errors', { msg: '비밀번호 변경 토큰이 유효하지 않거나 시간이 초과되었습니다.' });
         return res.redirect('/forgot');
       }
       res.render('account/reset', {
@@ -240,8 +237,8 @@ exports.getReset = function(req, res) {
  */
 
 exports.postReset = function(req, res, next) {
-  req.assert('password', 'Password must be at least 4 characters long.').len(4);
-  req.assert('confirm', 'Passwords must match.').equals(req.body.password);
+  req.assert('password', '비밀번호는 최소 4자 이상이어야 합니다.').len(4);
+  req.assert('confirm', '비밀번호가 일치하지 않습니다.').equals(req.body.password);
 
   var errors = req.validationErrors();
 
@@ -257,7 +254,7 @@ exports.postReset = function(req, res, next) {
         .where('resetPasswordExpires').gt(Date.now())
         .exec(function(err, user) {
           if (!user) {
-            req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
+            req.flash('errors', { msg: '비밀번호 변경 토큰이 유효하지 않거나 시간이 초과되었습니다.' });
             return res.redirect('back');
           }
 
@@ -283,13 +280,12 @@ exports.postReset = function(req, res, next) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Your Hackathon Starter password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        from: 'dbstore-sample@github.com',
+        subject: '비밀번호 변경 확인',
+        text: '회원님 계정의 비밀번호가 재설정 되었습니다.'
       };
       transporter.sendMail(mailOptions, function(err) {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });
+        req.flash('success', { msg: '비밀번호가 재설정 되었습니다.' });
         done(err);
       });
     }
@@ -320,7 +316,7 @@ exports.getForgot = function(req, res) {
  */
 
 exports.postForgot = function(req, res, next) {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
+  req.assert('email', '이메일 주소를 바르게 입력해 주세요.').isEmail();
 
   var errors = req.validationErrors();
 
@@ -339,7 +335,7 @@ exports.postForgot = function(req, res, next) {
     function(token, done) {
       User.findOne({ email: req.body.email.toLowerCase() }, function(err, user) {
         if (!user) {
-          req.flash('errors', { msg: 'No account with that email address exists.' });
+          req.flash('errors', { msg: '해당 이메일로 가입된 계정이 없습니다.' });
           return res.redirect('/forgot');
         }
 
@@ -361,15 +357,15 @@ exports.postForgot = function(req, res, next) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
-        text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        from: 'dbstore-sample@github.com',
+        subject: '비밀번호 초기화',
+        text: '비밀번호 초기화 요청에 의해 본 메일이 발송되었습니다.\n\n' +
+        '아래 주소에 접속하면 비밀번호를 변경할 수 있습니다.\n\n' +
+        'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+        '위 주소는 한 시간 동안 유효하며, 비밀번호 변경을 원하지 않으면 이 메일을 무시하시면 됩니다.\n'
       };
       transporter.sendMail(mailOptions, function(err) {
-        req.flash('info', { msg: 'An e-mail has been sent to ' + user.email + ' with further instructions.' });
+        req.flash('info', { msg: user.email + '로 이메일이 발송되었습니다.' });
         done(err, 'done');
       });
     }

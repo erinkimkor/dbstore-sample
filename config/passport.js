@@ -7,6 +7,7 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var GitHubStrategy = require('passport-github').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+var NaverStrategy = require('passport-naver').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy; // Tumblr
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy; // Venmo, Foursquare
 var User = require('../models/User');
@@ -69,12 +70,12 @@ passport.use(new InstagramStrategy(secrets.instagram,function(req, accessToken, 
 
 passport.use(new LocalStrategy({ usernameField: 'email' }, function(email, password, done) {
   User.findOne({ email: email }, function(err, user) {
-    if (!user) return done(null, false, { message: 'Email ' + email + ' not found'});
+    if (!user) return done(null, false, { message: email + ' 로 가입된 계정은 없습니다.'});
     user.comparePassword(password, function(err, isMatch) {
       if (isMatch) {
         return done(null, user);
       } else {
-        return done(null, false, { message: 'Invalid email or password.' });
+        return done(null, false, { message: '비밀번호가 일치하지 않습니다.' });
       }
     });
   });
@@ -101,7 +102,7 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
   if (req.user) {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
       if (existingUser) {
-        req.flash('errors', { msg: 'There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        req.flash('errors', { msg: '페이스북과 연결된 다른 계정이 있습니다. 해당 계정으로 로그인 하여 페이스북과 연동을 해제한 뒤 다시 본 계정으로 로그인하세요.' });
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {
@@ -111,7 +112,7 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.save(function(err) {
-            req.flash('info', { msg: 'Facebook account has been linked.' });
+            req.flash('info', { msg: '페이스북이 연동되었습니다.' });
             done(err, user);
           });
         });
@@ -122,7 +123,7 @@ passport.use(new FacebookStrategy(secrets.facebook, function(req, accessToken, r
       if (existingUser) return done(null, existingUser);
       User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
         if (existingEmailUser) {
-          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
+          req.flash('errors', { msg: '페이스북과 연결된 다른 계정이 있습니다. 해당 계정으로 로그인 하여 페이스북과 연동을 해제한 뒤 다시 본 계정으로 로그인하세요.' });
           done(err);
         } else {
           var user = new User();
@@ -196,7 +197,7 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
   if (req.user) {
     User.findOne({ twitter: profile.id }, function(err, existingUser) {
       if (existingUser) {
-        req.flash('errors', { msg: 'There is already a Twitter account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        req.flash('errors', { msg: '트위터와 연결된 다른 계정이 있습니다. 해당 계정으로 로그인 하여 트위터와 연동을 해제한 뒤 다시 본 계정으로 로그인하세요.' });
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {
@@ -206,7 +207,7 @@ passport.use(new TwitterStrategy(secrets.twitter, function(req, accessToken, tok
           user.profile.location = user.profile.location || profile._json.location;
           user.profile.picture = user.profile.picture || profile._json.profile_image_url_https;
           user.save(function(err) {
-            req.flash('info', { msg: 'Twitter account has been linked.' });
+            req.flash('info', { msg: '트위터가 연동되었습니다.' });
             done(err, user);
           });
         });
@@ -239,7 +240,7 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
   if (req.user) {
     User.findOne({ google: profile.id }, function(err, existingUser) {
       if (existingUser) {
-        req.flash('errors', { msg: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.' });
+        req.flash('errors', { msg: '구글과 연결된 다른 계정이 있습니다. 해당 계정으로 로그인 하여 구글과 연동을 해제한 뒤 다시 본 계정으로 로그인하세요.' });
         done(err);
       } else {
         User.findById(req.user.id, function(err, user) {
@@ -249,7 +250,7 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || profile._json.picture;
           user.save(function(err) {
-            req.flash('info', { msg: 'Google account has been linked.' });
+            req.flash('info', { msg: '구글이 연동되었습니다.' });
             done(err, user);
           });
         });
@@ -260,7 +261,7 @@ passport.use(new GoogleStrategy(secrets.google, function(req, accessToken, refre
       if (existingUser) return done(null, existingUser);
       User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
         if (existingEmailUser) {
-          req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
+          req.flash('errors', { msg: '구글과 연결된 다른 계정이 있습니다. 해당 계정으로 로그인 하여 구글과 연동을 해제한 뒤 다시 본 계정으로 로그인하세요.' });
           done(err);
         } else {
           var user = new User();
@@ -318,6 +319,50 @@ passport.use(new LinkedInStrategy(secrets.linkedin, function(req, accessToken, r
           user.profile.location = profile._json.location.name;
           user.profile.picture = profile._json.pictureUrl;
           user.profile.website = profile._json.publicProfileUrl;
+          user.save(function(err) {
+            done(err, user);
+          });
+        }
+      });
+    });
+  }
+}));
+
+// Sign in with Naver.
+
+passport.use(new NaverStrategy(secrets.naver, function(req, accessToken, refreshToken, profile, done) {
+  if (req.user) {
+    User.findOne({ naver: profile.id }, function(err, existingUser) {
+      if (existingUser) {
+        req.flash('errors', { msg: '네이버와 연결된 다른 계정이 있습니다. 해당 계정으로 로그인 하여 네이버와 연동을 해제한 뒤 다시 본 계정으로 로그인하세요.' });
+        done(err);
+      } else {
+        User.findById(req.user.id, function(err, user) {
+          user.naver = profile.id;
+          user.tokens.push({ kind: 'naver', accessToken: accessToken });
+          user.profile.name = user.profile.name || profile.displayName;
+          user.profile.picture = user.profile.picture || profile._json.profile_image;
+          user.save(function(err) {
+            req.flash('info', { msg: '네이버가 연동되었습니다.' });
+            done(err, user);
+          });
+        });
+      }
+    });
+  } else {
+    User.findOne({ google: profile.id }, function(err, existingUser) {
+      if (existingUser) return done(null, existingUser);
+      User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
+        if (existingEmailUser) {
+          req.flash('errors', { msg: '네이버와 연결된 다른 계정이 있습니다. 해당 계정으로 로그인 하여 네이버와 연동을 해제한 뒤 다시 본 계정으로 로그인하세요.' });
+          done(err);
+        } else {
+          var user = new User();
+          user.email = profile._json.email;
+          user.naver = profile.id;
+          user.tokens.push({ kind: 'naver', accessToken: accessToken });
+          user.profile.name = profile.displayName;
+          user.profile.picture = profile._json.profile_image;
           user.save(function(err) {
             done(err, user);
           });
