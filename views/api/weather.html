@@ -10,7 +10,7 @@
     <div class="rb-overlay">
       <span class="rb-close">close</span>
       <div class="rb-week">
-        <div><span class="rb-city">{{ d.name }}</span><span class="icon-clima-{{ f.today.icon }}"></span><span>{{ f.today.temperature }}°C</span></div>
+        <div><span class="rb-city">{{ d.name }}</span><span class="icon-clima-{{ d.today.icon }}"></span><span>{{ d.today.temperature }}°C</span></div>
         {% for f in d.forecast %}
         <div><span>{{ f.dayofweek }}</span><span class="icon-clima-{{ f.icon }}"></span><span>{{ f.temperature }}°C</span></div>
         {% endfor %}

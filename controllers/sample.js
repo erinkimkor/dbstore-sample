@@ -83,7 +83,7 @@ exports.get = function(req, res) {
 function getWeather(callback) {
   var result = [];
 
-  async.each(data, function(d, callback) {
+  async.eachSeries(data, function(d, callback) {
     var options = {
       url: util.format('http://apis.skplanetx.com/gweather/forecast/mid?lon=%s&lat=%s&version=1', d.lon, d.lat),
       headers: {
@@ -91,6 +91,7 @@ function getWeather(callback) {
       },
       json: true
     };
+
     request.get(options, function(err, resp, body) {
       if (!err && resp.statusCode == 200) {
         if (body.result.code < 9400) {
@@ -110,9 +111,11 @@ function getWeather(callback) {
         callback(body.error);
       }
     });
+
   }, function(err) {
     callback(err, result);
   });
+
 }
 
 function parseForecast(forecast) {
